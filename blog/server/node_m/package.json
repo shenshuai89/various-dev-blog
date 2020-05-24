@@ -1,0 +1,17 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/www.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/www.js",
+    "pro": "cross-env NODE_ENV=production nodemon ./bin/www.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "nodemon": "^2.0.4"
+  }
+}
