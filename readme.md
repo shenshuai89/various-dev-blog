@@ -8,11 +8,12 @@
 
 ## 后端
 - 使用node开发http请求
-    1.get请求,通过querystring获取浏览器地址栏的数据a.html?a=100&b=200
+
+  1.get请求,通过querystring获取浏览器地址栏的数据a.html?a=100&b=200
 ```js
 let query = querystring.parse(req.url.spilt("?")[1])
 ```
-    2.post请求
+  2.post请求
 ```js
 let postData = '';
 req.on("data",(chunk)=>{
