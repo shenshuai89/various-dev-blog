@@ -32,7 +32,17 @@ req.on("end",()=>{
 ### node原生
 
 
-
+```sql
+CREATE TABLE `blogs` (
+`id`  int(255) NOT NULL AUTO_INCREMENT ,
+`title`  varchar(50) NOT NULL ,
+`content`  longtext NOT NULL ,
+`createtime`  bigint NOT NULL ,
+`author`  varchar(20) NOT NULL ,
+PRIMARY KEY (`id`)
+)
+;
+```
 
 
 ### express框架

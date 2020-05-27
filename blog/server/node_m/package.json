@@ -8,7 +8,7 @@
     "pro": "cross-env NODE_ENV=production nodemon ./bin/www.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "shenshuai89@qq.com",
   "license": "ISC",
   "devDependencies": {
     "cross-env": "^7.0.2",
