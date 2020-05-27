@@ -1,40 +1,41 @@
-const blogRouter = (req, res)=>{
+const { getList } = require("../control/blog")
+const { SucessModel, ErrorModel } = require("../model/resModel")
+
+const blogRouter = (req, res) => {
     const method = req.method
-    const url = req.url
-    const path = url.split("?")[0]
-    // const query = url.split("?")[1]
+    let author = req.query.author || ""
+    let keyword = req.query.keyword || ""
+    let listData = getList(author, keyword) 
     // 获取博客列表
-    if(method ==="GET" && path === "/api/blog/list"){
-        return {
-            msg:"获取博客列表"
-        }
+    if (method === "GET" && req.path === "/api/blog/list") {
+        return new SucessModel(listData)
     }
 
     // 获取博客详情
-    if(method ==="GET" && path === "/api/blog/detail"){
+    if (method === "GET" && req.path === "/api/blog/detail") {
         return {
-            msg:"获取博客详情"
+            msg: "获取博客详情"
         }
     }
 
     // 新建一篇博客文章
-    if(method ==="POST" && path === "/api/blog/new"){
+    if (method === "POST" && req.path === "/api/blog/new") {
         return {
-            msg:"新建一篇博客文章"
+            msg: "新建一篇博客文章"
         }
     }
 
     // 更新一篇博客文章
-    if(method ==="POST" && path === "/api/blog/update"){
+    if (method === "POST" && path === "/api/blog/update") {
         return {
-            msg:"更新一篇博客文章"
+            msg: "更新一篇博客文章"
         }
     }
 
     // 删除一篇博客文章
-    if(method ==="POST" && path === "/api/blog/del"){
+    if (method === "POST" && path === "/api/blog/del") {
         return {
-            msg:"删除一篇博客文章"
+            msg: "删除一篇博客文章"
         }
     }
 }

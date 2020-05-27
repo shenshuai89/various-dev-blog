@@ -1,11 +1,10 @@
 使用多种技术方案开发简易blog系统，只是为了走通和梳理通技术流程，不追求页面外观细节点
 
-后台使用node原生、express、koa2、Eggjs各开发一遍
+- 后台使用node原生、express、koa2、Eggjs各开发一遍
+- 前端页面使用vue、react开发
+- 数据库选用mySql
 
-前端页面使用vue、react开发
-
-数据库选用mySql
-
+为了能够快速下载和安装node_modules,可以使用淘宝镜像地址--registry=https://registry.npm.taobao.org
 ## 后端
 - 使用node开发http请求
 
