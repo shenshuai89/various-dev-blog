@@ -39,17 +39,27 @@ const serverHandle = (req, res) => {
     req.query = querystring.parse(url.split("?")[1])
 
     getPostData(req).then(postData => {
+        // 异步调用，要把所有的请求放到回调成功后的函数
         req.body = postData
         // 首先要将postData数据添加到req的body属性上，然后在传递给不同的路由
-        const blogData = blogRouter(req, res)
+        const blogResult = blogRouter(req, res)
         const userData = userRouter(req, res)
-        if (blogData) {
-            res.end(JSON.stringify(blogData))
+        if (blogResult) {
+            blogResult.then(blogData=>{
+                res.end(JSON.stringify(blogData))
+            })
+            
             return
         }
-
+        console.log("userData",userData);
         if (userData) {
-            res.end(JSON.stringify(userData))
+            // 使用模拟数据
+            // res.end(JSON.stringify(userData))
+            // return
+            userData.then(loginData=>{
+                // console.log(loginData);
+                res.end(JSON.stringify(loginData))
+            })
             return
         }
 
@@ -57,8 +67,6 @@ const serverHandle = (req, res) => {
         res.write("404 NOT FOUND PAGE")
         res.end('')
     })
-
-
 
 }
 

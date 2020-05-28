@@ -1,47 +1,72 @@
 const Mock = require("mockjs")
+const {exec} = require("../db/mysql")
 
-let list = []
-for (let i = 0; i < 20; i++) {
-    let listObject = {
-        id: i + 1,
-        title: Mock.Random.csentence(5, 30),
-        content: Mock.Random.csentence(50, 100),//  Mock.Random.csentence( min, max )
-        author_name: Mock.Random.cname(), // Mock.Random.cname() 随机生成一个常见的中文姓名
-        createTime: Mock.Random.date() + ' ' + Mock.Random.time() // Mock.Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Mock.Random.time() 返回一个随机的时间字符串
-    }
-    list.push(listObject)
-}
+// let list = []
+// for (let i = 0; i < 20; i++) {
+//     let listObject = {
+//         id: i + 1,
+//         title: Mock.Random.csentence(5, 30),
+//         content: Mock.Random.csentence(50, 100),//  Mock.Random.csentence( min, max )
+//         author_name: Mock.Random.cname(), // Mock.Random.cname() 随机生成一个常见的中文姓名
+//         createTime: Mock.Random.date() + ' ' + Mock.Random.time() // Mock.Random.date()指示生成的日期字符串的格式,默认为yyyy-MM-dd；Mock.Random.time() 返回一个随机的时间字符串
+//     }
+//     list.push(listObject)
+// }
 const getList = (author, keyword) => {
     // 先返回mock数据
-    return list
+    let sql = `select * from blogs where 1=1 `
+    if(author){
+        sql += `and author = '${author}'`
+    }
+    if(keyword){
+        sql += `and title like '%${keyword}%'`
+    }
+    sql += `order by createtime desc`
+    return exec(sql)
 }
 // 获取博客详情
 const getDetail = (id) => {
-    return {
-        "id": 5,
-        "title": "且收方议象整验想带周那自切马切。",
-        "content": "者事西后一质领土精议象局速务然制花集况间照业整观解适压院太作如济以积无收时按经通政通问实月办步过文速三两高机酸年存示育前极约斯多光广会能物当本圆然之题支。",
-        "author_name": "赵洋",
-        "createTime": "1988-01-25 17:32:19"
-    }
+    let sql = `select * from blogs where id=${id}`
+    return exec(sql).then(rows=>{
+        return rows[0]
+    })
 }
 
 // 新建一篇博客
 const newBlog = (blog = {}) => {
-    return {
-        id: 1
-    }
+    const {title, content, author} = blog
+    // console.log(title,content,author);
+    let createtime = Date.now()
+    const sql = `insert into blogs (title, content, author, createtime) values ('${title}', '${content}', '${author}', ${createtime})`
+    return exec(sql).then(insertData=>{
+        console.log("insertData is :",insertData);
+        return {
+            id: insertData.insertId
+        }
+    })
 }
 
 // 更新一篇博客
 const updateBlog = (id, blog={})=>{
-    console.log('更新博客内容', id, blog);
-    return true
+    const {title, content} = blog
+    let sql = `update blogs set title='${title}', content='${content}' where id='${id}'`
+    return exec(sql).then(res=>{
+        console.log(`update 更新`,res);
+        if(res.affectedRows > 0){
+            return true
+        }
+        return false
+    })
 }
 // 删除一篇博客
-const delBlog = (id) =>{
-    console.log(`删除的博客id是`, id);
-    return true
+const delBlog = (id, author) =>{
+    let sql = `delete from blogs where id='${id}' and author='${author}';`
+    return exec(sql).then(res=>{
+        if(res.affectedRows > 0){
+            return true
+        }
+        return false
+    })
 }
 
 module.exports = {

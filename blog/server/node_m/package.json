@@ -13,6 +13,7 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "mockjs": "^1.1.0",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.4"
   }
 }

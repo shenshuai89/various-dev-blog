@@ -10,41 +10,62 @@ const blogRouter = (req, res) => {
     if (method === "GET" && req.path === "/api/blog/list") {
         let author = req.query.author || ""
         let keyword = req.query.keyword || ""
-        let listData = getList(author, keyword)
-        return new SucessModel(listData)
+        // let listData = getList(author, keyword)
+        // return new SucessModel(listData)
+        const result = getList(author, keyword)
+        return result.then(list=>{
+            return new SucessModel(list)
+        })
     }
 
     // 获取博客详情
     if (method === "GET" && req.path === "/api/blog/detail") {
-        let detail = getDetail(id)
-        return new SucessModel(detail)
+        let result = getDetail(id)
+        return result.then(detail=>{
+            if(detail){
+                return new SucessModel(detail)
+            }else{
+                return new ErrorModel("查询的这篇博客不存在")
+            }
+        })
     }
 
     // 新建一篇博客文章
     if (method === "POST" && req.path === "/api/blog/new") {
-        let data = newBlog(req.body)
-        return new SucessModel(data)
+        // 模拟一个假数据author
+        req.body.author = "张三"
+        let result = newBlog(req.body)
+        return result.then(data=>{
+            return new SucessModel(data)
+        })
     }
 
     // 更新一篇博客文章
     if (method === "POST" && req.path === "/api/blog/update") {
         console.log(req);
         let result = updateBlog(id, req.body)
-        if(result){
-            return new SucessModel()
-        }else{
-            return new ErrorModel("update fail")
-        }
+        return result.then(val=>{
+            if(val){
+                return new SucessModel()
+            }else{
+                return new ErrorModel("update fail")
+            }
+        })
+        
     }
 
     // 删除一篇博客文章
     if (method === "POST" && req.path === "/api/blog/del") {
-        let res = delBlog(id)
-        if(res){
-            return new SucessModel()
-        }else{
-            return new ErrorModel("删除失败")
-        }
+        const author = "张三";
+        let result = delBlog(id, author)
+        return result.then(res=>{
+            if(res){
+                return new SucessModel()
+            }else{
+                return new ErrorModel("删除失败")
+            }
+        })
+        
     }
 }
 

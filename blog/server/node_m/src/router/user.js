@@ -6,12 +6,20 @@ const userRouter = (req, res)=>{
 
     // 用户登录接口
     if(method ==="POST" && req.path === "/api/user/login"){
-        let result = login("sam",123400)
-        if(result){
-            return new SucessModel()
-        }else{
+        // let result = login("sam",123400)
+        // if(result){
+        //     return new SucessModel()
+        // }else{
+        //     return new ErrorModel("login fail")
+        // } 
+        const {username, password} = req.body
+        const result = login(username, password)
+        return result.then(res=>{
+            if(res.username){
+                return new SucessModel({username:res.username},"登录成功")
+            }
             return new ErrorModel("login fail")
-        } 
+        })
     }
 }
 
