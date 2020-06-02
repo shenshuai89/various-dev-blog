@@ -1,6 +1,9 @@
 const querystring = require("querystring")
 const blogRouter = require("./src/router/blog")
 const userRouter = require("./src/router/user")
+const {getCookieExpires} = require('./src/util/common')
+
+const SESSION_DATA = {}
 
 const getPostData = (req) => {
     const p = new Promise((resolve, reject) => {
@@ -51,6 +54,20 @@ const serverHandle = (req, res) => {
         req.cookie[key] = val
     })
 
+    let needSetCookie= false
+    // 解析session
+    let userId = req.cookie.userid
+    if(userId){
+        if(!SESSION_DATA[userId]){
+            SESSION_DATA[userId] = {}
+        }
+    }else{
+        needSetCookie = true
+        userId = Date.now()+"_"+Math.random()
+        SESSION_DATA[userId] = {}
+    }
+    req.session = SESSION_DATA[userId]
+
     getPostData(req).then(postData => {
         // 异步调用，要把所有的请求放到回调成功后的函数
         req.body = postData
@@ -59,6 +76,9 @@ const serverHandle = (req, res) => {
         const userData = userRouter(req, res)
         if (blogResult) {
             blogResult.then(blogData=>{
+                if(needSetCookie){
+                    res.setHeader('Set-Cookie', `userid=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`)
+                }
                 res.end(JSON.stringify(blogData))
             })
             return
@@ -68,6 +88,9 @@ const serverHandle = (req, res) => {
             // 使用模拟数据
             // res.end(JSON.stringify(userData))
             // return
+            if(needSetCookie){
+                res.setHeader('Set-Cookie', `userid=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`)
+            }
             userData.then(loginData=>{
                 // console.log(loginData);
                 res.end(JSON.stringify(loginData))

@@ -1,12 +1,13 @@
 const {login} = require("../control/user")
 const {SucessModel, ErrorModel} = require("../model/resModel")
+const {getCookieExpires} = require("../util/common")
 // 设置cookie的过期时间
-const getCookieExpires = () =>{
-    const d = new Date()
-    d.setTime(d.getTime() + (24*7*60*60*1000))
-    console.log('d.toGMTString() : ',d.toGMTString());
-    return d.toGMTString()
-}
+// const getCookieExpires = () =>{
+//     const d = new Date()
+//     d.setTime(d.getTime() + (24*7*60*60*1000))
+//     console.log('d.toGMTString() : ',d.toGMTString());
+//     return d.toGMTString()
+// }
 
 const userRouter = (req, res)=>{
     const method = req.method
@@ -24,7 +25,11 @@ const userRouter = (req, res)=>{
         const result = login(username, password)
         return result.then(resData=>{
             if(resData.username){
-                res.setHeader('Set-Cookie', `username=${resData.username}; path=/; httpOnly; expires=${getCookieExpires()}`)
+                // 设置cookie
+                // res.setHeader('Set-Cookie', `username=${resData.username}; path=/; httpOnly; expires=${getCookieExpires()}`)
+                // 设置session
+                req.session.username = resData.username
+                req.session.realname = resData.realname
                 return Promise.resolve(
                     new SucessModel({username:resData.username},"登录成功")
                 )
@@ -34,10 +39,10 @@ const userRouter = (req, res)=>{
     }
     if(method ==="GET" && req.path === "/api/user/login-test"){
         console.log(req.cookie);
-        if(req.cookie.username){
+        if(req.cookie.userid){
             return Promise.resolve(
                 new SucessModel({
-                    username:req.cookie.username
+                    session:req.session
                 },"登录成功")
             )
         }

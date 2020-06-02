@@ -130,6 +130,15 @@ function exec(sql) {
 ```
 
 #### 实现登录login接口
+1 使用cookie进行用户的登录
+cookie属性的设置
+* expires:过期时间
+* httpOnly:只能在后端设置，前端页面无法修改
+* path:存在的页面地址，一般为根目录
+
+2 使用session进行用户登录验证
+cookie存储的信息太小 4kb;
+由于cookie存储用户信息，会将信息暴露在外，比较危险，所以会将userId存入cookie，server端查询对应的username，用session在服务端存储用户的信息
 
 ### express框架
 
