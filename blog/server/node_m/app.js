@@ -38,6 +38,19 @@ const serverHandle = (req, res) => {
     // 解析get请求后面的参数,可以把这个query对象添加给req的属性
     req.query = querystring.parse(url.split("?")[1])
 
+    // 解析cookie
+    req.cookie = {}
+    const cookieStr = req.headers.cookie || ""
+    cookieStr.split(";").forEach(item=>{
+        if(!item){
+            return
+        }
+        let arr=item.split("=")
+        let key = arr[0].trim()
+        let val = arr[1].trim()
+        req.cookie[key] = val
+    })
+
     getPostData(req).then(postData => {
         // 异步调用，要把所有的请求放到回调成功后的函数
         req.body = postData
@@ -48,10 +61,9 @@ const serverHandle = (req, res) => {
             blogResult.then(blogData=>{
                 res.end(JSON.stringify(blogData))
             })
-            
             return
         }
-        console.log("userData",userData);
+        // console.log("userData",userData);
         if (userData) {
             // 使用模拟数据
             // res.end(JSON.stringify(userData))
