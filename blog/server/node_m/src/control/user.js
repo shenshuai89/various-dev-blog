@@ -1,9 +1,14 @@
-const {exec} = require("../db/mysql")
+const {exec, escape} = require("../db/mysql")
+const {generatePassword} = require("../util/cryp")
 
 const login =(username, password)=>{
-    const sql = `select username, realname from users where username='${username}' and password='${password}'`
+    // 明文密码123
+    password = generatePassword(password)
+    username = escape(username)
+    password = escape(password)
+    const sql = `select username, realname from users where username=${username} and password=${password}`
     
-    // if(username=="sam"&&password==123456){
+    // if(username=="sam"&&password==123){
     //     return true
     // }
     return exec(sql).then(res=>{

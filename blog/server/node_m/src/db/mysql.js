@@ -21,5 +21,6 @@ function exec(sql) {
 
 // con.end()
 module.exports = {
-    exec
+    exec,
+    escape:mysql.escape
 }

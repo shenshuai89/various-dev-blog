@@ -194,16 +194,61 @@ redisClient.get('mykey', (err,val)=>{
 ### koa3框架
 
 ### 日志分析
+使用fs模块
+readFile、writeFile会一次性把文件所有内容加载至内存中操作，会造成很大的性能瓶颈，有些文件会非常大。
+解决方案：使用stream
+使用fs模块的createReadStream、createWriteStream流操作
+分析日志采用readline逐行分析的办法
+```js
+const filename = path.resolve(__dirname, "../../logs/access.log")
+const readStream = fs.createReadStream(filename)
 
-
+const rl = readline.createInterface({
+    input: readStream
+})
+rl.on("line", (linedata) =>{
+    if(!linedata){
+        return
+    }
+    const arr = linedata.split(" -- ")
+    console.log(arr)
+})
+rl.on('close', ()=>{
+    console.log("readline分析日志文件");
+})
+```
 ### 安全
-sql注入:使用mysql的escape方法将用户输入的参数转义
+- sql注入（窃取数据库数据）:使用mysql的escape方法将用户输入的参数转义
+用户在输入的表单中使用--将sql部分注释掉，会造成非法登录等风险
+解决办法
+mysql.escape()
 
-xss跨站请求攻击：使用xss库，将表单输入的内容执行一下函数，xss(content),可以将<script>转为没有攻击性的文本&lt;script&gt;
+- xss跨站请求攻击（窃取前端cookie，假扮用户身份）：使用xss库，将表单输入的内容执行一下函数，xss(content),可以将<script>转为没有攻击性的文本&lt;script&gt;
+转换特殊符号
+& -> &amp;
+< -> &lt;
+> -> &gt;
+" -> &quot;
+' -> &#x27;
+/ -> &#x2F;
+使用node的xss依赖包
+let content = xss(content)
 
-csrf跨站请求伪造
+- csrf跨站请求伪造（假扮被访问网站的身份）
 
-密码加密:数据库禁止存放明文密码
+- 密码加密:数据库禁止存放明文密码
+crypto数据加密
+```js
+function md5(content){
+    let md5 = crypto.createHash('md5')
+    return md5.update(content).digest('hex')
+}
+function generatePassword(pwd){
+    const str = `password=${pwd}&key=${SECRET_KEY}`
+    return md5(str)
+}
+console.log(generatePassword(123));
+```
 
 ## 前端
 ### jqhtml的实现
