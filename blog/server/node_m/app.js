@@ -3,6 +3,8 @@ const blogRouter = require("./src/router/blog")
 const userRouter = require("./src/router/user")
 const {getCookieExpires} = require('./src/util/common')
 
+const {access} = require("./src/util/log")
+
 const SESSION_DATA = {}
 
 const getPostData = (req) => {
@@ -33,6 +35,8 @@ const getPostData = (req) => {
 }
 
 const serverHandle = (req, res) => {
+    console.log(req);
+    access(`${req.method} -- ${req.url} -- ${req.headers['user-agent']} -- ${Date.now()}`)
     // 设置数据返回的格式 JSON
     res.setHeader('content-type', "application/json")
     const url = req.url
