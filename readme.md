@@ -139,7 +139,97 @@ cookie属性的设置
 2 使用session进行用户登录验证
 cookie存储的信息太小 4kb;
 由于cookie存储用户信息，会将信息暴露在外，比较危险，所以会将userId存入cookie，server端查询对应的username，用session在服务端存储用户的信息
+```js
+let needSetCookie= false
+let userId = req.cookie.userid
+if(userId){
+    if(!SESSION_DATA[userId]){
+        SESSION_DATA[userId] = {}
+    }
+}else{
+    needSetCookie = true
+    userId = Date.now()+"_"+Math.random()
+    SESSION_DATA[userId] = {}
+}
+req.session = SESSION_DATA[userId]
+```
+session会存在问题
+目前session是js变量，放在nodejs进程的内存中
+* 进程内存有限，访问量增大，内存会溢出
+* 正式上线后，程序是多进程的，进程之间的内存无法共享
+
+3 使用redis存储session数据，redis内存数据库
+为什么可以使用redis存储session
+1 session操作频繁
+2 丢失了没有损失，可以找回
+3 数据量不大
+
+网站数据不适合使用redis存储
+1 操作频率不高
+2 断电及其他物理原因损害，数据不能丢失，必须保留
+3 数据量太大，内存成本过高
+
+```js
+const redis = require("redis")
+const redisClient = redis.createClient(6379, "127.0.0.1")
+redisClient.on('error', err=>{
+    console.error(err);
+})
+
+redisClient.set('mykey','redisclient', redis.print)
+redisClient.get('mykey', (err,val)=>{
+    if(err){
+        console.error(err)
+        return
+    }
+    console.log("val", val);
+
+    redisClient.quit()
+})
+```
+可以将redis封装成数据接口，get和set方法，详见db>redis.js
 
 ### express框架
 
 ### koa3框架
+
+### 日志分析
+
+
+### 安全
+sql注入:使用mysql的escape方法将用户输入的参数转义
+
+xss跨站请求攻击：使用xss库，将表单输入的内容执行一下函数，xss(content),可以将<script>转为没有攻击性的文本&lt;script&gt;
+
+csrf跨站请求伪造
+
+密码加密:数据库禁止存放明文密码
+
+## 前端
+### jqhtml的实现
+nginx做前后端接口联调
+nginx是高性能的web服务器，适合做静态服务、负载均衡
+可以将jq-html的文件通过http-server启动在8001端口
+
+反向代理通过配置nginx/conf/nginx.conf文件
+``` txt
+location / {
+  proxy_pass  http://127.0.0.1:8001;
+}
+location /api/ {
+  proxy_pass  http://127.0.0.1:8000;
+  proxy_set_header Host $host;
+}
+```
+然后执行测试配置文件脚本格式是否正确
+nginx -t
+启动nginx：nginx;
+重启nginx：nginx -s reload
+停止nginx ： nginx -s stop
+
+### vue-html的实现
+
+
+
+
+### react-html的实现
