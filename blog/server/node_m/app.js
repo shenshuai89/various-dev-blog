@@ -1,9 +1,9 @@
 const querystring = require("querystring")
 const blogRouter = require("./src/router/blog")
 const userRouter = require("./src/router/user")
-const {getCookieExpires} = require('./src/util/common')
+const {getCookieExpires} = require('./src/utils/common')
 
-const {access} = require("./src/util/log")
+const {access} = require("./src/utils/log")
 
 const SESSION_DATA = {}
 

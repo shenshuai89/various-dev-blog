@@ -168,7 +168,13 @@ session会存在问题
 1 操作频率不高
 2 断电及其他物理原因损害，数据不能丢失，必须保留
 3 数据量太大，内存成本过高
+redis的安装,https://www.runoob.com/redis/redis-install.html
+redis的启动：
+$ redis-server
+在打开另外一个cmd窗口
+$ redis-cli
 
+redis的连接
 ```js
 const redis = require("redis")
 const redisClient = redis.createClient(6379, "127.0.0.1")
@@ -190,6 +196,16 @@ redisClient.get('mykey', (err,val)=>{
 可以将redis封装成数据接口，get和set方法，详见db>redis.js
 
 ### express框架
+express是对node封装的一个后端接口处理的框架，路由的处理在routes文件夹
+use执行中间件，中间件实质上是一个函数，在express中，需要传入req,res,next三个参数
+主要入口文件app.js
+比较重要常用的几个中间件
+* cookie-parser：解析cookie对象
+* express-session：处理session对象
+* connect-redis： 将session存储到redis
+* morgan ：日志记录
+
+
 
 ### koa3框架
 

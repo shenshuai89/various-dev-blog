@@ -1,6 +1,6 @@
 const {login} = require("../control/user")
 const {SucessModel, ErrorModel} = require("../model/resModel")
-// const {getCookieExpires} = require("../util/common")
+// const {getCookieExpires} = require("../utils/common")
 const {set, get} = require('../db/redis.js')
 // 设置cookie的过期时间
 // const getCookieExpires = () =>{

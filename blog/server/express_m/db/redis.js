@@ -37,33 +37,5 @@ function get(key){
     return promise
 }
 
-// 退出登陆，删除session
-function del(key){
-    const promise = new Promise((resolve, reject)=>{
-        redisClient.del(key, (err,val)=>{
-            if(err){
-                reject(err)
-                return
-            }
-            if(val == null){
-                resolve(null)
-                return
-            }
+module.exports =  redisClient
 
-            try{
-                resolve(
-                    JSON.parse(val)
-                )
-            }catch(ex){
-                resolve(val)
-            }
-        })
-    })
-    
-    return promise
-}
-
-module.exports ={
-    set,
-    get
-}
