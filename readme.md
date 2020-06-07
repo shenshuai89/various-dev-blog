@@ -4,7 +4,7 @@
 * 前端页面使用vue、react开发
 * 数据库选用mySql
 
-为了能够快速下载和安装node_modules, 可以使用淘宝镜像地址--registry=https://registry.npm.taobao.org
+为了能够快速下载和安装node_modules, 可以使用淘宝镜像地址 --registry=https://registry.npm.taobao.org
 
 ## 后端
 
@@ -205,9 +205,89 @@ use执行中间件，中间件实质上是一个函数，在express中，需要�
 * connect-redis： 将session存储到redis
 * morgan ：日志记录
 
+express的安装
+```js
+// 全局安装express-cli攻击
+npm install -g express-genertaor
+// 创建express项目
+express express_m
+```
+express框架路由的使用
+```js
+// 获取get的参数
+let id = req.query.id
+// 获取post的参数
+let content = req.body.content
+
+// 处理结果最后的返回值
+res.json({"msg":"请求返回的数据成功"})
+// 或者返回字符串
+res.send("请求返回的数据成功")
+```
+
+### koa2框架
+在koa2中使用 **async** 语法处理异步回调。
+
+koa2的安装
+```js
+// 全局安装koa-cli工具
+npm install -g koa-genertaor
+// 创建koa2项目koa_m
+koa2 koa_m
+```
+
+koa2的路由管理在单独的插件中，需要单独安装koa-router
+在koa2的路由中，router回调函数中ctx参数，代表着req和res
+```js
+// 获取get的参数
+let id = ctx.query.id
+// 获取post的参数
+let content = ctx.request.body.content
+
+// 处理结果最后的返回值
+ctx.body = "请求返回的数据成功"
+```
+
+记录日志的插件: koa-morgan
+在app.js入口文件中添加日志记录
+``` js
+// 日志记录
+const ENV = process.env.NODE_ENV
+if (ENV !== 'production') {
+  // 开发环境 / 测试环境
+  app.use(morgan('dev'));
+} else {
+  // 线上环境
+  const logFileName = path.join(__dirname, 'logs', 'access.log')
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: 'a'
+  })
+  console.log("logFileName", logFileName);
+  app.use(morgan('combined', {
+    stream: writeStream
+  }));
+}
+```
+解析session数据：koa-generic-session
+将数据存储到redis：koa-redis
+session的记录，并存储入redis
+``` js
+app.use(session({
+  // 配置cookie
+  cookie:{
+    path:"/",
+    httpOnly:true,
+    maxAge:24*60*60*1000*7
+  },
+  store:redisStore({
+    // all:"/"
+    all:`${REDIS_CONF.host}:${REDIS_CONF.port}`
+  })
+}))
+```
+### Eggjs框架
 
 
-### koa3框架
 
 ### 日志分析
 使用fs模块
