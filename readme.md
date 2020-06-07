@@ -374,3 +374,41 @@ nginx -t
 
 
 ### react-html的实现
+
+## 线上部署发布
+PM2的安装
+npm install -g pm2
+查看版本
+pm2 --version
+
+PM2的进程守护，系统崩溃，会自动重启
+PM2运行在后台，nodemon运行在前台
+
+启动：pm2 start
+查看任务：pm2 list
+重启： pm2 restart <name/id>
+停止服务： pm2 stop <name/id>
+删除服务：pm2 delete <name/id>
+查看服务基本信息：pm2 info <name/id>
+查看服务的日志：pm2 log <name/id>
+查看程序层使用服务器的信息：pm2 monit
+
+PM2配置和写入日志功能
+新建一个配置文件pm.conf.json
+```json
+{
+  "apps":{
+    "name":"pm2-server",
+    "script":"app.js",
+    "watch": true,
+    "ignore_watch" :[
+      "node_modules",
+      "logs"
+    ],
+    "instances":4,
+    "out_file":"logs/out.log",
+    "error_file":"logs/error.log",
+    "log_date_format":"YYYY-MM-DD HH:mm:ss"
+  }
+}
+```
