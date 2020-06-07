@@ -286,8 +286,44 @@ app.use(session({
 }))
 ```
 ### Eggjs框架
+eggjs是一个对koa2框架进一步封装的框架
+创建项目
+$ npm init egg --type=simple
+运行项目
+$ npm run dev
 
+router路由
 
+Controller控制器
+
+Service服务，连接数据库，执行sql
+
+插件安装在config的plugin.js
+``` js
+exports.mysql = {
+  enable: true,
+  package: 'egg-mysql',
+};
+
+exports.redis = {
+  enable: true,
+  package: 'egg-redis',
+};
+
+exports.sessionRedis = {
+  enable: true,
+  package: 'egg-session-redis',
+};
+```
+
+项目的配置修改在config中config.default.js
+``` js
+config.mysql = {}
+config.cluster = {}
+config.security = {}
+config.redis = {}
+// ...
+```
 
 ### 日志分析
 使用fs模块
