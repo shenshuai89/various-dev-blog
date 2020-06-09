@@ -1,4 +1,4 @@
-const blogController = $api_root => {
+const blogController = () => {
     return {
         getLists: {
             method: "get",
@@ -8,6 +8,21 @@ const blogController = $api_root => {
         detail: {
             method: "get",
             url: `/api/blog/detail`,
+            intercept: true
+        },
+        create:{
+            method: "post",
+            url: `/api/blog/new`,
+            intercept: true
+        },
+        update:{
+            method: "post",
+            url: `/api/blog/update`,
+            intercept: true
+        },
+        del:{
+            method: "post",
+            url: `/api/blog/del`,
             intercept: true
         }
     };

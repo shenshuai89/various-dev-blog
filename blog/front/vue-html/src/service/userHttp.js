@@ -3,7 +3,7 @@ import HTTP from "./http";
 export default {
     login: async params => {
         let opt = { ...apiMaps.user.login };
-        console.log(typeof params);
+        // console.log(typeof params);
         const res = await HTTP(opt, params);
         return res;
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="detail">
     <h1>{{detail&&detail.title}}</h1>
-    <p>作者：{{detail&&detail.author}}</p>
+    <p @click="goAuthorList(detail.author)">作者：{{detail&&detail.author}}</p>
     <div>{{detail&&detail.content}}</div>
 
   </div>
@@ -24,7 +24,15 @@ export default {
       if(detailObj&&detailObj.errno == 0){
         this.detail = detailObj.data
       }
+    },
+    async goAuthorList(author){
+      this.$router.push({
+        path:"/list",  // 只能是name传参
+        query:{
+          author
+        }
+      })
     }
-  },
+  }
 }
 </script>

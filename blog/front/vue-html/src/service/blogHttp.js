@@ -12,5 +12,23 @@ export default {
 
         const res = await HTTP(opt, params);
         return res;
+    },
+    create: async params => {
+        let opt = { ...apiMaps.blog.create };
+
+        const res = await HTTP(opt, params);
+        return res;
+    },
+    update: async params => {
+        let opt = { ...apiMaps.blog.update };
+
+        const res = await HTTP(opt, params);
+        return res;
+    },
+    del: async params => {
+        let opt = { ...apiMaps.blog.del };
+
+        const res = await HTTP(opt, params);
+        return res;
     }
 }

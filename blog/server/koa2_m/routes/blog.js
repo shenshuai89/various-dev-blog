@@ -39,7 +39,7 @@ router.post("/new", async(ctx, next) =>{
 })
 
 router.post("/update", async(ctx, next)=>{
-    let id = ctx.query.id
+    let id = ctx.query.id  || ctx.request.body.id
     let updateResult = await updateBlog(id, ctx.request.body)
     if(updateResult){
         ctx.body = new SucessModel()
@@ -49,7 +49,8 @@ router.post("/update", async(ctx, next)=>{
 })
 
 router.post("/del", async(ctx, next)=>{
-    let id = ctx.query.id
+    let id = ctx.query.id || ctx.request.body.id
+    // console.log(ctx.request.body.id);
     let delResult = await delBlog(id, ctx.session.username)
     if(delResult){
         ctx.body = new SucessModel("删除成功")
