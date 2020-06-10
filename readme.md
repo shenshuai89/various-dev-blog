@@ -405,9 +405,56 @@ nginx -t
 停止nginx ： nginx -s stop
 
 ### vue-html的实现
+使用webpack-dev-server配置devserver信息,前端页面显示在端口8001，接口请求地址为8000
+``` js
+devServer: {
+    /* 自动打开浏览器 */
+    open: true,
+    /* 设置为0.0.0.0则所有的地址均能访问 */
+    host: '0.0.0.0',
+    port: 8001,
+    https: false,
+    hotOnly: false,
+    /* 使用代理 */
+    proxy: {
+        '/api': {
+            target: 'http://127.0.0.1:8000',
+            /* 允许跨域 */
+            changeOrigin: true,
+        },
+    },
+}
+```
+界面UI - 安装vant ui。
 
+#### 对axios进行封装
+在config文件夹中，新建http文件夹，从新封装axios
+``` js
+const instance = axios.create({
+    method: 'post',
+    baseURL: process.env.API_ROOT,
+    headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+    },
+    data: {},
+    timeout: 4000,
+    responseType: 'json'
+});
+instance.interceptors.request.use(
+  // ...
+)
+instance.interceptors.response.use(
+  // ...
+)
+```
 
+#### 封装接口请求api
+在网络接口请求netWork中封装apis文件
+将每个模块的接口单独放到一个js文件中
 
+#### 新建service服务，处理前端数据和api接口的参数的关系
+在service的http中，可以统一处理全局接口请求的一些动作。
+然后可以把前端页面数据和api需要的数据做格式处理
 
 ### react-html的实现
 

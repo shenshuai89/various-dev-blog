@@ -53,7 +53,12 @@ export default {
   },
   methods: {
     async update(id) {
-        console.log(`更新这篇${id}博客`);
+      this.$router.push({
+        path: "/update",
+        query: {
+          id: id
+        }
+      });
     },
     async del(id) {
       let res = await blogService.del({ id: id });
@@ -66,7 +71,7 @@ export default {
         this.lists = lists.data;
       }
     },
-    async onSearch(val) {
+    async onSearch() {
       let lists = await blogService.getLists({
         author: this.author,
         keyword: this.keyword
@@ -90,7 +95,9 @@ export default {
       else return null;
     },
     create() {
-      console.log("新建博客");
+      this.$router.push({
+        path: "/new"
+      });
     }
   }
 };

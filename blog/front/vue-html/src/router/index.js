@@ -27,6 +27,16 @@ Vue.use(VueRouter)
     path: '/admin',
     name: 'admin',
     component: () => import(/* webpackChunkName: "admin" */ '@/views/Admin.vue')
+  },
+  {
+    path: '/update',
+    name: 'update',
+    component: () => import(/* webpackChunkName: "update" */ '@/views/Update.vue')
+  },
+  {
+    path: '/new',
+    name: 'new',
+    component: () => import(/* webpackChunkName: "new" */ '@/views/New.vue')
   }
 ]
 
