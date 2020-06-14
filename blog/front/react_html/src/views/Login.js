@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import cookie from 'react-cookies'
 import { Input, Button, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import "./login.css"
@@ -19,7 +20,9 @@ class Login extends Component {
         })
         if (res && res.errno === 0) {
             message.success(res.message);
-        }else{
+            cookie.save("username", this.state.username)
+            this.props.history.push({ pathname: "/admin" })
+        } else {
             message.error(res.message);
         }
     }
@@ -35,9 +38,9 @@ class Login extends Component {
     }
     render() {
         return (<div className="login">
-            用户名：<Input placeholder="Basic usage" onInput={(e) => this.setUserName(e)} value={this.state.username} />
+            用户名：<Input placeholder="输入用户名" onInput={(e) => this.setUserName(e)} value={this.state.username} />
             密码：<Input.Password
-                placeholder="input password"
+                placeholder="请输入密码"
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                 onInput={(e) => this.setPassword(e)} value={this.state.password}
             />
