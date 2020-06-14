@@ -1,0 +1,21 @@
+@import '~antd/dist/antd.css';
+
+.App {
+  margin: 40px;
+}
+
+.App-header {
+  font-size: 28px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.author_link {
+  align-self: flex-start;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
