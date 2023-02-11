@@ -10,7 +10,7 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.20"
   },
   "dependencies": {
     "connect-redis": "^4.0.4",
